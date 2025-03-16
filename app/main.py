@@ -1,15 +1,17 @@
 from fastapi import FastAPI
 from app.database import engine, Base
+from fastapi.middleware.cors import CORSMiddleware
 
-# Explicitly import all models to register with Base
+# Import all models (including new ones)
 from app.models.challenge import Challenge
 from app.models.user import User
 from app.models.activity import Activity
 from app.models.team import Team, user_teams
 from app.models.reward import Reward
+from app.models.challenge_participation import ChallengeParticipation  # New model
 
-# Create tables in the database if they don't exist
 Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(
     title="Gulf South Wellness Challenge Platform",
@@ -17,22 +19,41 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# Explicitly import all routers
-from app.routers.challenge import router as challenge
-from app.routers.user import router as user
-from app.routers.activity import router as activity
-from app.routers.team import router as team
-from app.routers.reward import router as reward
-from app.routers.weekly_challenges import router as weekly_challenges
-
-app.include_router(challenge, prefix="/challenges", tags=["Challenges"])
-app.include_router(user, prefix="/users", tags=["Users"])
-app.include_router(activity, prefix="/activities", tags=["Activities"])
-app.include_router(team, prefix="/teams", tags=["Teams"])
-app.include_router(reward, prefix="/rewards", tags=["Rewards"])
-app.include_router(
-    weekly_challenges, prefix="/weekly-challenges", tags=["Weekly Challenges"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+# Import routers
+from app.routers import (
+    challenge,
+    user,
+    activity,
+    team,
+    reward,
+    weekly_challenges,
+    user_profile,
+    challenge_participation,
+    leaderboards,
+    statistics,
+)
+
+app.include_router(challenge.router, prefix="/challenges", tags=["Challenges"])
+app.include_router(user.router, prefix="/users", tags=["Users"])
+app.include_router(activity.router, prefix="/activities", tags=["Activities"])
+app.include_router(team.router, prefix="/teams", tags=["Teams"])
+app.include_router(reward.router, prefix="/rewards", tags=["Rewards"])
+app.include_router(
+    weekly_challenges.router, prefix="/weekly-challenges", tags=["Weekly Challenges"]
+)
+
+# New endpoints
+app.include_router(user_profile.router, prefix="/users", tags=["User Profile"])
+app.include_router(challenge_participation.router, tags=["Challenge Participation"])
+app.include_router(leaderboards.router, tags=["Leaderboards"])
+app.include_router(statistics.router, tags=["Statistics"])
 
 
 @app.get("/")
