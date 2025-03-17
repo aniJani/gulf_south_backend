@@ -11,7 +11,13 @@ This is the backend repository for an ecosystem that combines two key components
 - Backend: [https://github.com/aniJani/gulf_south_backend](https://github.com/aniJani/gulf_south_backend)
 - Frontend: [https://github.com/aniJani/gulf-south-wellness](https://github.com/aniJani/gulf-south-wellness)
 ---
+## Video Demonstration
 
+Watch our platform demonstration to see the project in action:
+
+[![Gulf South Wellness Platform Demo](https://img.youtube.com/vi/i6BroYUmjYw/0.jpg)](https://www.youtube.com/watch?v=i6BroYUmjYw)
+
+*Click the image above to watch the demo video*
 ## Installation & Setup
 
 ### Backend: Gulf South Wellness Challenge Platform
