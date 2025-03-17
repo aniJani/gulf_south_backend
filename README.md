@@ -33,7 +33,27 @@ conda activate test1
 pip install -r requirements.txt
 ```
 
-#### 3. Create Environment Configuration
+#### 3. Database Prerequisites
+
+**Important:** Before proceeding, ensure you have MySQL server installed and running on your system. You'll need to have:
+- MySQL server installed and running
+- Admin access or a user with privileges to create databases
+- Your MySQL username and password readily available
+
+If you don't have MySQL installed, you can download it from the [official MySQL website](https://dev.mysql.com/downloads/) or install it using your system's package manager:
+
+```bash
+# For Ubuntu/Debian
+sudo apt install mysql-server
+
+# For macOS (using Homebrew)
+brew install mysql
+
+# For Windows
+# Download the MySQL Installer from the official website
+```
+
+#### 4. Create Environment Configuration
 
 Create a `.env` file in the root directory with the following content:
 
@@ -50,7 +70,7 @@ DATABASE_URL="mysql+pymysql://root:YourNewPassword%21@localhost/gulf_south_db"
 > **Note:** The format of the `DATABASE_URL` is:  
 > `"mysql+pymysql://username:password@localhost/db_name"`
 
-#### 4. Database Setup
+#### 5. Database Setup
 
 - **seed.py** automatically creates a database named as specified in your `.env` file (e.g., `gulf_south_db`).
 - **If you already have a database** and you want to use that database first make sure it is empty and use the same name in your `.env` file (e.g., `gulf_south_db`).
@@ -67,7 +87,7 @@ DATABASE_URL="mysql+pymysql://root:YourNewPassword%21@localhost/gulf_south_db"
   Database seeded successfully with enriched leaderboard data!
   ```
 
-#### 5. Running the Backend Application
+#### 6. Running the Backend Application
 
 Start the FastAPI server with:
 
