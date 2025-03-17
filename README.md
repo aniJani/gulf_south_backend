@@ -126,7 +126,7 @@ npm run dev
 ```
 
 Once running, access the application at:  
-`http://localhost:5173` (or the port specified in your configuration)
+`http://localhost:5173` (or the port specified in your configuration). If you have other port number allow them in the CORS middleware for the backend.
 
 ---
 
