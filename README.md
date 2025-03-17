@@ -26,9 +26,10 @@ cd gulf_south_backend
 #### 2. Set Up the Python Environment
 
 You can use Conda to set up your environment:
+Replace test1 with what you want your environment name to be.
 
 ```bash
-conda create --name test1 python=3.10.16
+conda create --name test1 python=3.10.16 
 conda activate test1
 pip install -r requirements.txt
 ```
@@ -39,19 +40,6 @@ pip install -r requirements.txt
 - MySQL server installed and running
 - Admin access or a user with privileges to create databases
 - Your MySQL username and password readily available
-
-If you don't have MySQL installed, you can download it from the [official MySQL website](https://dev.mysql.com/downloads/) or install it using your system's package manager:
-
-```bash
-# For Ubuntu/Debian
-sudo apt install mysql-server
-
-# For macOS (using Homebrew)
-brew install mysql
-
-# For Windows
-# Download the MySQL Installer from the official website
-```
 
 #### 4. Create Environment Configuration
 
