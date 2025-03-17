@@ -7,8 +7,8 @@ This repository combines two key components of the Gulf South Wellness ecosystem
 
 2. **Gulf South Wellness (Frontend)**
 
-- Backend: [https://github.com/aniJani/gulf_south_backend](https://github.com/aniJani/gulf_south_backend)
-- Frontend: [https://github.com/aniJani/gulf-south-wellness](https://github.com/aniJani/gulf-south-wellness)
+Backend: [https://github.com/aniJani/gulf_south_backend](https://github.com/aniJani/gulf_south_backend)
+Frontend: [https://github.com/aniJani/gulf-south-wellness](https://github.com/aniJani/gulf-south-wellness)
 ---
 
 ## Installation & Setup
