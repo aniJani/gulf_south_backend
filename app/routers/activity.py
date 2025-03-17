@@ -65,8 +65,22 @@ def complete_activity_endpoint(
 
 
 @router.delete("/{activity_id}")
-def delete_activity_endpoint(activity_id: int, db: Session = Depends(get_db)):
-    success = delete_activity(db, activity_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Activity not found")
+def delete_activity_endpoint(
+    activity_id: int, user_id: int, db: Session = Depends(get_db)
+):
+    """Delete an activity, but only if incomplete and owned by the user"""
+    result = delete_activity(db, activity_id, user_id)
+
+    if not result["success"]:
+        if result["reason"] == "not_found":
+            raise HTTPException(status_code=404, detail="Activity not found")
+        elif result["reason"] == "not_owner":
+            raise HTTPException(
+                status_code=403, detail="You can only delete your own activities"
+            )
+        elif result["reason"] == "already_completed":
+            raise HTTPException(
+                status_code=400, detail="Cannot delete completed activities"
+            )
+
     return {"message": "Activity deleted successfully"}

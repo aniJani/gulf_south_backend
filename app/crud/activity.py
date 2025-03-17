@@ -72,11 +72,21 @@ def complete_activity(db: Session, activity_id: int, user_id: int):
     return db_activity
 
 
-def delete_activity(db: Session, activity_id: int):
+def delete_activity(db: Session, activity_id: int, user_id: int):
+
     db_activity = get_activity(db, activity_id)
+
     if not db_activity:
-        return False
+        return {"success": False, "reason": "not_found"}
+
+    # Check if user owns the activity
+    if db_activity.user_id != user_id:
+        return {"success": False, "reason": "not_owner"}
+
+    # Check if activity is already completed
+    if db_activity.is_completed:
+        return {"success": False, "reason": "already_completed"}
 
     db.delete(db_activity)
     db.commit()
-    return True
+    return {"success": True}
