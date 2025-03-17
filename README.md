@@ -7,8 +7,8 @@ This repository combines two key components of the Gulf South Wellness ecosystem
 
 2. **Gulf South Wellness (Frontend)**
 
-Backend: [https://github.com/aniJani/gulf_south_backend](https://github.com/aniJani/gulf_south_backend)
-Frontend: [https://github.com/aniJani/gulf-south-wellness](https://github.com/aniJani/gulf-south-wellness)
+- Backend: [https://github.com/aniJani/gulf_south_backend](https://github.com/aniJani/gulf_south_backend)
+- Frontend: [https://github.com/aniJani/gulf-south-wellness](https://github.com/aniJani/gulf-south-wellness)
 ---
 
 ## Installation & Setup
@@ -29,7 +29,7 @@ You can use either Conda or venv to set up your Python environment:
 **Option A: Using Conda**
 
 ```bash
-conda create --name test1 python=3.10.16 #name your environment to your liking
+conda create --name test1 python=3.10.16
 conda activate test1
 pip install -r requirements.txt
 ```
@@ -65,7 +65,7 @@ DATABASE_URL="mysql+pymysql://root:YourNewPassword%21@localhost/gulf_south_db"
 #### 4. Database Setup
 
 - **Create a MySQL database** named as specified in your `.env` file (e.g., `gulf_south_db`).
-- **Run the seed script** It will create the database and initialize the database with sample data:
+- **Run the seed script** to initialize the database with sample data:
 
   ```bash
   python seed.py
