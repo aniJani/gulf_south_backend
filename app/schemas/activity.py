@@ -3,19 +3,28 @@ from pydantic import BaseModel
 
 
 class ActivityBase(BaseModel):
-    description: str
+    title: str
+    description: str | None = None
+    points: int = 0
 
 
 class ActivityCreate(ActivityBase):
-    user_id: int
-    challenge_id: int | None = None
+    pass
+
+
+class ActivityUpdate(BaseModel):
+    title: str | None = None
+    description: str | None = None
+    points: int | None = None
+    is_completed: bool | None = None
 
 
 class Activity(ActivityBase):
     id: int
-    timestamp: datetime
+    is_completed: bool
+    completed_at: datetime | None = None
+    created_at: datetime
     user_id: int
-    challenge_id: int | None = None
 
     class Config:
         from_attributes = True

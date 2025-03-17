@@ -7,7 +7,6 @@ from app.models.challenge import Challenge
 from app.models.user import User
 from app.models.activity import Activity
 from app.models.team import Team, user_teams
-from app.models.reward import Reward
 from app.models.challenge_participation import ChallengeParticipation  # New model
 
 Base.metadata.create_all(bind=engine)
@@ -21,7 +20,11 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Your frontend URL
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:5173",
+    ],  # Your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,7 +35,6 @@ from app.routers import (
     user,
     activity,
     team,
-    reward,
     weekly_challenges,
     user_profile,
     challenge_participation,
@@ -44,7 +46,6 @@ app.include_router(challenge.router, prefix="/challenges", tags=["Challenges"])
 app.include_router(user.router, prefix="/users", tags=["Users"])
 app.include_router(activity.router, prefix="/activities", tags=["Activities"])
 app.include_router(team.router, prefix="/teams", tags=["Teams"])
-app.include_router(reward.router, prefix="/rewards", tags=["Rewards"])
 app.include_router(
     weekly_challenges.router, prefix="/weekly-challenges", tags=["Weekly Challenges"]
 )

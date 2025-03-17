@@ -1,49 +1,79 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from app.models.activity import Activity
-from app.models.challenge_participation import ChallengeParticipation
-from app.models.reward import Reward
+from app.models.user import User, user_challenges
+from app.models.challenge import Challenge
 
 
 def get_user_statistics(db: Session, user_id: int):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        return None
+
     activities_count = (
         db.query(func.count(Activity.id)).filter(Activity.user_id == user_id).scalar()
     )
+
+    activities_completed = (
+        db.query(func.count(Activity.id))
+        .filter(Activity.user_id == user_id, Activity.is_completed == True)
+        .scalar()
+    )
+
     challenges_count = (
-        db.query(func.count(ChallengeParticipation.id))
-        .filter(ChallengeParticipation.user_id == user_id)
+        db.query(func.count(user_challenges.c.challenge_id))
+        .filter(user_challenges.c.user_id == user_id)
         .scalar()
     )
-    total_points = (
-        db.query(func.coalesce(func.sum(Reward.points), 0))
-        .filter(Reward.user_id == user_id)
+
+    challenges_completed = (
+        db.query(func.count(user_challenges.c.challenge_id))
+        .filter(
+            user_challenges.c.user_id == user_id, user_challenges.c.completed == True
+        )
         .scalar()
     )
+
     return {
         "user_id": user_id,
+        "username": user.username,
+        "total_points": user.total_points,
         "activities_count": activities_count,
+        "activities_completed": activities_completed,
         "challenges_joined": challenges_count,
-        "total_points": total_points,
+        "challenges_completed": challenges_completed,
     }
 
 
 def get_challenge_statistics(db: Session, challenge_id: int):
+    challenge = db.query(Challenge).filter(Challenge.id == challenge_id).first()
+    if not challenge:
+        return None
+
     participants_count = (
-        db.query(func.count(ChallengeParticipation.id))
-        .filter(ChallengeParticipation.challenge_id == challenge_id)
+        db.query(func.count(user_challenges.c.user_id))
+        .filter(user_challenges.c.challenge_id == challenge_id)
         .scalar()
     )
-    activities_count = (
-        db.query(func.count(Activity.id))
-        .filter(Activity.challenge_id == challenge_id)
+
+    completions_count = (
+        db.query(func.count(user_challenges.c.user_id))
+        .filter(
+            user_challenges.c.challenge_id == challenge_id,
+            user_challenges.c.completed == True,
+        )
         .scalar()
     )
-    avg_activities = 0
+
+    completion_rate = 0
     if participants_count > 0:
-        avg_activities = activities_count / participants_count
+        completion_rate = (completions_count / participants_count) * 100
+
     return {
         "challenge_id": challenge_id,
+        "title": challenge.title,
+        "points_value": challenge.points,
         "participants_count": participants_count,
-        "activities_count": activities_count,
-        "avg_activities_per_participant": avg_activities,
+        "completions_count": completions_count,
+        "completion_rate": completion_rate,
     }

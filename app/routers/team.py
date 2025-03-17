@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.team import Team, TeamCreate
+from typing import List
+from app.schemas.team import Team, TeamCreate, UserBase
 from app.crud.team import (
     get_team_by_name,
     create_team,
@@ -34,7 +35,7 @@ def add_team_member(team_id: int, user_id: int, db: Session = Depends(get_db)):
     return {"message": "Member added", "team": team}
 
 
-@router.get("/{team_id}/members")
-def list_team_members(team_id: int, db: Session = Depends(get_db)):
+@router.get("/{team_id}/members", response_model=List[UserBase])
+def get_team_members_endpoint(team_id: int, db: Session = Depends(get_db)):
     members = get_team_members(db, team_id)
     return members
