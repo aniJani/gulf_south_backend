@@ -141,8 +141,8 @@ Gulf South Wellness is a comprehensive platform aimed at enhancing the health an
 ### Features
 
 - **User Management**: Registration, authentication, and profile management
-- **Challenges**: Create, join, and complete health and wellness challenges
-- **Activities**: Track personal health activities and earn points
+- **Challenges**: Browse, join, and complete wellness challenges (Admins create challenges through API calls, example in seed.py)
+- **Activities**: Create, track, and complete personal wellness activities (Users can create activities)
 - **Teams**: Form teams and collaborate on wellness goals
 - **Leaderboards**: View top performers by user, and teams.
 - **Statistics**: Track individual and challenge participation statistics
