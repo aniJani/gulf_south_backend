@@ -4,8 +4,7 @@ from app.schemas.challenge import ChallengeCreate, ChallengeUpdate
 import random
 
 
-def get_challenge(db: Session, challenge_id: int):
-    """Get a challenge by its ID"""
+def get_challenge(db: Session, challenge_id: int):  # from id
     return db.query(Challenge).filter(Challenge.id == challenge_id).first()
 
 
@@ -17,8 +16,9 @@ def get_challenges(db: Session, skip: int = 0, limit: int = 10):
     return db.query(Challenge).offset(skip).limit(limit).all()
 
 
-def get_weekly_challenge_options(db: Session):
-    # Return exactly 7 random challenges from the entire pool
+def get_weekly_challenge_options(
+    db: Session,
+):  # Return exactly 7 random challenges from the entire pool
     all_challenges = db.query(Challenge).all()
     if len(all_challenges) <= 7:
         return all_challenges
@@ -29,7 +29,7 @@ def create_challenge(db: Session, challenge: ChallengeCreate):
     db_challenge = Challenge(
         title=challenge.title,
         description=challenge.description,
-        points=challenge.points,  # Add points field
+        points=challenge.points,
         start_date=challenge.start_date,
         end_date=challenge.end_date,
         is_active=challenge.is_active,

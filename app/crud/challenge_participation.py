@@ -3,7 +3,7 @@ from app.models.challenge_participation import ChallengeParticipation
 
 
 def add_participant_to_challenge(db: Session, challenge_id: int, user_id: int):
-    # Check if the participation already exists
+    # Checking if the participation already exists
     existing = (
         db.query(ChallengeParticipation)
         .filter_by(challenge_id=challenge_id, user_id=user_id)

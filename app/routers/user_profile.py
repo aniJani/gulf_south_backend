@@ -7,6 +7,7 @@ from app.database import get_db
 router = APIRouter()
 
 
+# Get user profile by ID
 @router.get("/{user_id}", response_model=User)
 def get_user_profile(user_id: int, db: Session = Depends(get_db)):
     user = get_user_by_id(db, user_id)
@@ -15,6 +16,7 @@ def get_user_profile(user_id: int, db: Session = Depends(get_db)):
     return user
 
 
+# Update user profile by ID
 @router.patch("/{user_id}", response_model=User)
 def patch_user_profile(
     user_id: int, user_update: UserUpdate, db: Session = Depends(get_db)

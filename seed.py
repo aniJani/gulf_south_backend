@@ -125,8 +125,6 @@ try:
                 user.joined_challenges.append(challenge)
             # Simulate a 50% chance that the user completed the challenge.
             if random.random() < 0.5:
-                # Directly update the association table using raw SQL for simplicity
-                # (Assumes the user_challenges table has columns: user_id, challenge_id, completed, completed_at)
                 db.execute(
                     text(
                         """
@@ -141,7 +139,6 @@ try:
                         "challenge_id": challenge.id,
                     },
                 )
-                # Award points only if challenge is completed
                 user.total_points += challenge.points
         db.commit()
 

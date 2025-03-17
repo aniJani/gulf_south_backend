@@ -98,8 +98,8 @@ def complete_challenge(db: Session, user_id: int, challenge_id: int):
     if challenge not in user.joined_challenges:
         return None
 
-    # Transaction management issue - use a single transaction for everything
-    with db.begin_nested():  # Use a savepoint for safety
+    # single nested transaction for everything to avoid issues with partial completion
+    with db.begin_nested():
         # Check if already completed using raw SQL
         check_query = text(
             """
@@ -115,7 +115,6 @@ def complete_challenge(db: Session, user_id: int, challenge_id: int):
         if record and record[0]:  # Already completed
             return user
 
-        # Update with raw SQL for reliability
         update_query = text(
             """
             UPDATE user_challenges 
@@ -132,13 +131,9 @@ def complete_challenge(db: Session, user_id: int, challenge_id: int):
             },
         )
 
-        # Award points to user
         user.total_points += challenge.points
 
-    # Commit the entire transaction
     db.commit()
-
-    # Refresh to ensure we have the latest data
     db.refresh(user)
     return user
 
@@ -149,20 +144,18 @@ def get_user_challenges(db: Session, user_id: int, completed: bool = None):
     if not user:
         return []
 
-    # Always use a join query to get completion information
+    # join query to get completion information
     query = (
         db.query(Challenge, user_challenges.c.completed, user_challenges.c.completed_at)
         .join(user_challenges, Challenge.id == user_challenges.c.challenge_id)
         .filter(user_challenges.c.user_id == user_id)
     )
 
-    # Only apply completion filter if explicitly requested
     if completed is not None:
         query = query.filter(user_challenges.c.completed == completed)
 
     results = query.all()
-
-    # Create serializable dictionaries with completion data
+    # dictionary comprehension to format the results because of the join
     return [
         {
             "id": row[0].id,

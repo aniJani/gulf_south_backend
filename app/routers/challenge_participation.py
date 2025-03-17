@@ -35,10 +35,9 @@ def challenge_participants(challenge_id: int, db: Session = Depends(get_db)):
 
 @router.post("/challenges/{challenge_id}/participants")
 def join_challenge(challenge_id: int, user_id: int, db: Session = Depends(get_db)):
-    # Add to ChallengeParticipation table (keeping for compatibility)
+    # Add to ChallengeParticipation table just so we have a record of participation and compare with user_challenges
     participation = add_participant_to_challenge(db, challenge_id, user_id)
 
-    # Also add to user_challenges association table for completion tracking
     from app.crud.user import join_challenge as add_to_user_challenges
 
     user = add_to_user_challenges(db, user_id, challenge_id)
@@ -74,5 +73,5 @@ def complete_challenge_endpoint(
     return {
         "message": "Challenge completed successfully",
         "points_earned": challenge.points,
-        "total_points": result.total_points,  # Use result.total_points instead of adding points again
+        "total_points": result.total_points,
     }

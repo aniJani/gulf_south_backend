@@ -2,12 +2,11 @@ from fastapi import FastAPI
 from app.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 
-# Import all models (including new ones)
 from app.models.challenge import Challenge
 from app.models.user import User
 from app.models.activity import Activity
 from app.models.team import Team, user_teams
-from app.models.challenge_participation import ChallengeParticipation  # New model
+from app.models.challenge_participation import ChallengeParticipation
 
 Base.metadata.create_all(bind=engine)
 
@@ -49,8 +48,6 @@ app.include_router(team.router, prefix="/teams", tags=["Teams"])
 app.include_router(
     weekly_challenges.router, prefix="/weekly-challenges", tags=["Weekly Challenges"]
 )
-
-# New endpoints
 app.include_router(user_profile.router, prefix="/users", tags=["User Profile"])
 app.include_router(challenge_participation.router, tags=["Challenge Participation"])
 app.include_router(leaderboards.router, tags=["Leaderboards"])

@@ -28,7 +28,7 @@ class TeamUpdate(BaseModel):
 class Team(TeamBase):
     id: int
     created_at: datetime
-    users: List[UserBase] = []  # Use the simplified UserBase schema for users
+    users: List[UserBase] = []
 
     class Config:
         from_attributes = True

@@ -6,6 +6,7 @@ from app.crud.statistics import get_user_statistics, get_challenge_statistics
 router = APIRouter()
 
 
+# stats for user and challenge
 @router.get("/statistics/user/{user_id}")
 def user_statistics(user_id: int, db: Session = Depends(get_db)):
     stats = get_user_statistics(db, user_id)

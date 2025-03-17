@@ -10,7 +10,7 @@ class Activity(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(100), index=True)
     description = Column(Text, nullable=True)
-    points = Column(Integer, default=0)  # Points awarded for completion
+    points = Column(Integer, default=0)
     is_completed = Column(Boolean, default=False)
     completed_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)

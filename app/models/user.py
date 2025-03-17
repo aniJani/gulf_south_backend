@@ -24,13 +24,9 @@ class User(Base):
     full_name = Column(String(255), nullable=True)
     hashed_password = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=True)
-    total_points = Column(Integer, default=0)  # Track total points
-    weekly_challenge_ids = Column(
-        String(255), nullable=True
-    )  # Keep this for compatibility
-    weekly_challenge_week = Column(
-        DateTime, nullable=True
-    )  # Keep this for compatibility
+    total_points = Column(Integer, default=0)
+    weekly_challenge_ids = Column(String(255), nullable=True)
+    weekly_challenge_week = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships

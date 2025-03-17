@@ -14,6 +14,7 @@ from app.database import get_db
 router = APIRouter()
 
 
+# Create a new team
 @router.post("/", response_model=Team)
 def create_team_endpoint(team: TeamCreate, db: Session = Depends(get_db)):
     db_team = get_team_by_name(db, name=team.name)
@@ -22,11 +23,13 @@ def create_team_endpoint(team: TeamCreate, db: Session = Depends(get_db)):
     return create_team(db, team)
 
 
+# Get all teams
 @router.get("/", response_model=list[Team])
 def read_teams(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return get_teams(db, skip=skip, limit=limit)
 
 
+# Add a member to a team
 @router.post("/{team_id}/members")
 def add_team_member(team_id: int, user_id: int, db: Session = Depends(get_db)):
     team = add_member_to_team(db, team_id, user_id)
@@ -35,6 +38,7 @@ def add_team_member(team_id: int, user_id: int, db: Session = Depends(get_db)):
     return {"message": "Member added", "team": team}
 
 
+# Get all members of a team
 @router.get("/{team_id}/members", response_model=List[UserBase])
 def get_team_members_endpoint(team_id: int, db: Session = Depends(get_db)):
     members = get_team_members(db, team_id)
