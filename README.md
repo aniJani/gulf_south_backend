@@ -1,11 +1,12 @@
 # Gulf South Wellness Platform
 
-This repository combines two key components of the Gulf South Wellness ecosystem:
+This is the backend repository for an ecosystem that combines two key components of the Gulf South Wellness ecosystem:
 
 1. **Gulf South Wellness Challenge Platform (Backend)**  
    A FastAPI-based backend system designed to engage Gulf South residents in healthier lifestyles through challenges, activities, teams, and more.
 
-2. **Gulf South Wellness (Frontend)**
+2. **Gulf South Wellness (Frontend)**  
+   A Vue.js-based frontend application that provides an intuitive interface for users to engage with the wellness platform.
 
 - Backend: [https://github.com/aniJani/gulf_south_backend](https://github.com/aniJani/gulf_south_backend)
 - Frontend: [https://github.com/aniJani/gulf-south-wellness](https://github.com/aniJani/gulf-south-wellness)
@@ -24,24 +25,11 @@ cd gulf_south_backend
 
 #### 2. Set Up the Python Environment
 
-You can use either Conda or venv to set up your Python environment:
-
-**Option A: Using Conda**
+You can use Conda to set up your environment:
 
 ```bash
 conda create --name test1 python=3.10.16
 conda activate test1
-pip install -r requirements.txt
-```
-
-**Option B: Using venv**
-
-```bash
-python -m venv venv
-# On Windows
-venv\Scripts\activate
-# On macOS/Linux
-source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -64,7 +52,8 @@ DATABASE_URL="mysql+pymysql://root:YourNewPassword%21@localhost/gulf_south_db"
 
 #### 4. Database Setup
 
-- **Create a MySQL database** named as specified in your `.env` file (e.g., `gulf_south_db`).
+- **seed.py** automatically creates a database named as specified in your `.env` file (e.g., `gulf_south_db`).
+- **If you already have a database** and you want to use that database first make sure it is empty and use the same name in your `.env` file (e.g., `gulf_south_db`).
 - **Run the seed script** to initialize the database with sample data:
 
   ```bash
@@ -74,7 +63,7 @@ DATABASE_URL="mysql+pymysql://root:YourNewPassword%21@localhost/gulf_south_db"
   You should see an output like:
 
   ```
-  Database created.
+  Database created. #you will not see this if you have a already created database in your .env. This does not indicate an error.
   Database seeded successfully with enriched leaderboard data!
   ```
 
@@ -86,8 +75,8 @@ Start the FastAPI server with:
 uvicorn app.main:app --reload
 ```
 
-The API will be available at:  
-`http://localhost:8000`
+The API will be available at port 8000, if not change the port number in the frontend accordingly.:  
+`http://localhost:8000` 
 
 ---
 
@@ -104,8 +93,6 @@ cd gulf-south-wellness
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
 #### 3. Configure Environment Variables
@@ -116,15 +103,12 @@ Ensure you have a `.env` file in the root directory with the following content:
 VITE_API_BASE_URL=http://localhost:8000  # Use the port where your backend is running
 ```
 
-
 #### 4. Running the Frontend Application
 
 Start the development server with:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 Once running, access the application at:  
@@ -134,7 +118,7 @@ Once running, access the application at:
 
 ## Overview
 
-Gulf South Wellness is a comprehensive platform aimed at enhancing the health and wellness of residents in the Gulf South region. The system focuses on challenges, activities, and community engagement to motivate people to pursue activities that enhance health and wellness.
+Gulf South Wellness is a comprehensive platform aimed at enhancing the health and wellness of people who are motivated by a more collaborative environment. The system focuses on challenges, activities, and community engagement to motivate people to pursue activities that enhance health and wellness.
 
 ---
 
@@ -146,8 +130,7 @@ Gulf South Wellness is a comprehensive platform aimed at enhancing the health an
 - **Challenges**: Create, join, and complete health and wellness challenges
 - **Activities**: Track personal health activities and earn points
 - **Teams**: Form teams and collaborate on wellness goals
-- **Weekly Challenges**: Select and participate in weekly featured challenges
-- **Leaderboards**: View top performers by user, team, and challenge
+- **Leaderboards**: View top performers by user, and teams.
 - **Statistics**: Track individual and challenge participation statistics
 
 ### Technology Stack (Backend)
@@ -189,6 +172,7 @@ When the backend application is running, you can access:
 - `GET /activities/`: Get all activities
 - `GET /activities/user/{user_id}`: Get user's activities
 - `PATCH /activities/{activity_id}`: Update an activity
+- `DELETE /activities/{activity_id}`: DELETE an incomplete activity
 - `POST /activities/{activity_id}/complete`: Complete an activity
 
 **Teams**
@@ -233,11 +217,71 @@ gulf_south_backend/
 
 ## Frontend: Gulf South Wellness
 
+### Features
+
+- **User Authentication**: Login/signup functionality with secure token-based sessions
+- **Dashboard**: Overview of user's wellness journey with statistics and charts
+- **Challenges**: Browse, join, and complete wellness challenges
+- **Activities**: Create, track, and complete personal wellness activities
+- **Teams**: Create or join teams to collaborate on wellness goals
+- **Profile**: View and update user profile and activity history
+- **Leaderboards**: View top performers by user and team rankings
+- **Theme Toggle**: Light and dark mode support with persistent user preference
+
 ### Technology Stack (Frontend)
 
-- **Frontend Framework**: React.js with Vite build tool
-- **API Server**: Connects to the backend (running on port 8000)
-- **Database**: MySQL
+- **Framework**: Vue 3 with Composition API
+- **Build Tool**: Vite
+- **State Management**: Pinia
+- **Routing**: Vue Router
+- **HTTP Client**: Axios
+- **Data Visualization**: Chart.js
+- **Styling**: Custom CSS with CSS variables for theming
+
+### Project Structure (Frontend)
+
+```
+gulf-south-wellness/
+├── public/                   # Static assets
+├── src/
+│   ├── components/           # Reusable UI components
+│   │   ├── layout/           # Layout components (Sidebar, Auth/MainLayout)
+│   │   └── ui/               # UI components (ActivityChart, ChallengeCard)
+│   ├── services/             # API service layer
+│   │   └── api.js            # API endpoints and Axios config
+│   ├── store/                # Pinia state management
+│   │   └── auth.js           # Authentication state
+│   ├── utils/                # Utility functions
+│   │   └── theme.js          # Theme initialization and management
+│   ├── views/                # Page components
+│   │   ├── Auth.vue          # Authentication page
+│   │   ├── Challenges.vue    # Challenges and activities page
+│   │   ├── Dashboard.vue     # Main dashboard page
+│   │   ├── Profile.vue       # User profile page
+│   │   └── Teams.vue         # Teams management page
+│   ├── App.vue               # Root component
+│   ├── main.js               # Application entry point
+│   ├── router/               # Vue router configuration
+│   └── style.css             # Global styles and CSS variables
+├── .env                      # Environment variables
+├── index.html                # HTML entry point
+├── package.json              # Dependencies and scripts
+└── vite.config.js            # Vite configuration
+```
+
+### Key Components
+
+- **Layouts**: MainLayout.vue, AuthLayout.vue, Sidebar.vue
+- **Pages**: Dashboard.vue, Challenges.vue, Teams.vue, Profile.vue, Auth.vue
+- **UI Components**: ActivityChart.vue, ChallengeCard.vue
+- **State Management**: Authentication with Pinia store
+
+
+### API Integration
+
+- Centralized API service using Axios
+- Endpoints for users, challenges, activities, teams, and statistics
+- Auth state management with local storage
 
 ---
 
